@@ -69,7 +69,7 @@ export default function Home() {
   useEffect(() => {
     const detectLanguage = () => {
       const browserLang = navigator.language.split("-")[0];
-      console.log(browserLang)
+      console.log(browserLang);
       return browserLang === "fr" ? "fr" : "en";
     };
     setLang(detectLanguage());
@@ -93,8 +93,9 @@ export default function Home() {
             fill
             sizes="100vw"
             style={{
-              objectFit: "cover"
-            }} />
+              objectFit: "cover",
+            }}
+          />
           <div className="absolute inset-0 bg-black opacity-50"></div>
         </div>
         <div className="relative z-10">
@@ -127,8 +128,9 @@ export default function Home() {
                 sizes="100vw"
                 style={{
                   width: "100%",
-                  height: "auto"
-                }} />
+                  height: "auto",
+                }}
+              />
             </a>
             <a href="#" className="w-48">
               <Image
@@ -139,8 +141,9 @@ export default function Home() {
                 sizes="100vw"
                 style={{
                   width: "100%",
-                  height: "auto"
-                }} />
+                  height: "auto",
+                }}
+              />
             </a>
           </motion.div>
         </div>
@@ -186,8 +189,9 @@ export default function Home() {
               fill
               sizes="100vw"
               style={{
-                objectFit: "cover"
-              }} />
+                objectFit: "cover",
+              }}
+            />
           </motion.div>
         </div>
       </motion.section>
@@ -338,8 +342,9 @@ export default function Home() {
               sizes="100vw"
               style={{
                 width: "100%",
-                height: "auto"
-              }} />
+                height: "auto",
+              }}
+            />
           </a>
           <a href="#" className="w-48">
             <Image
@@ -350,8 +355,9 @@ export default function Home() {
               sizes="100vw"
               style={{
                 width: "100%",
-                height: "auto"
-              }} />
+                height: "auto",
+              }}
+            />
           </a>
         </motion.div>
       </motion.section>
