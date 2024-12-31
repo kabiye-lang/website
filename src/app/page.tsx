@@ -1,101 +1,360 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import { BookOpen, Globe, Users, GithubLogo } from "@phosphor-icons/react";
+import { motion } from "framer-motion";
+import SampleLesson from "@/components/sample-lesson";
+import LanguageSwitcher from "@/components/language-switcher";
+import NewsletterSignup from "@/components/newsletter-signup";
+
+const fadeIn = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.6 },
+};
+
+const translations = {
+  en: {
+    title: "Kabiyè en poche",
+    subtitle: "Your gateway to the Kabiyè language and culture",
+    discoverTitle: "Discover Kabiyè",
+    discoverText:
+      "Embark on a journey to learn Kabiyè, a vibrant language spoken by over 1 million people in Togo and beyond. Connect with a rich culture and open new doors of understanding.",
+    features: [
+      "Interactive lessons designed for mobile learning",
+      "Native speaker audio for perfect pronunciation",
+      "Cultural insights to deepen your understanding",
+      "Gamified experience to keep you motivated",
+    ],
+    whyChoose: "Why Choose Kabiyè en poche?",
+    sampleLesson: "Try a Sample Lesson",
+    joinCommunity: "Join Our Open Source Community",
+    communityText:
+      "Kabiyè en poche is an open-source project, and we welcome contributors from all backgrounds. Help us preserve and promote the Kabiyè language!",
+    viewGithub: "View on GitHub",
+    joinUs: "Join Our Community",
+    readyToStart: "Ready to Start Your Kabiyè Journey?",
+    downloadNow:
+      "Download the Kabiyè en poche app now and join thousands of learners discovering the beauty of Kabiyè language and culture.",
+  },
+  fr: {
+    title: "Kabiyè en poche",
+    subtitle: "Votre passerelle vers la langue et la culture Kabiyè",
+    discoverTitle: "Découvrez le Kabiyè",
+    discoverText:
+      "Embarquez pour un voyage d'apprentissage du Kabiyè, une langue vivante parlée par plus d'un million de personnes au Togo et au-delà. Connectez-vous à une riche culture et ouvrez de nouvelles portes de compréhension.",
+    features: [
+      "Leçons interactives conçues pour l'apprentissage mobile",
+      "Audio de locuteurs natifs pour une prononciation parfaite",
+      "Aperçus culturels pour approfondir votre compréhension",
+      "Expérience ludique pour rester motivé",
+    ],
+    whyChoose: "Pourquoi choisir Kabiyè en poche ?",
+    sampleLesson: "Essayez une leçon d'exemple",
+    joinCommunity: "Rejoignez notre communauté Open Source",
+    communityText:
+      "Kabiyè en poche est un projet open-source, et nous accueillons les contributeurs de tous horizons. Aidez-nous à préserver et à promouvoir la langue Kabiyè !",
+    viewGithub: "Voir sur GitHub",
+    joinUs: "Rejoignez notre communauté",
+    readyToStart: "Prêt à commencer votre voyage Kabiyè ?",
+    downloadNow:
+      "Téléchargez l'application Kabiyè en poche maintenant et rejoignez des milliers d'apprenants découvrant la beauté de la langue et de la culture Kabiyè.",
+  },
+};
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [lang, setLang] = useState<"en" | "fr">("en");
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  useEffect(() => {
+    const detectLanguage = () => {
+      const browserLang = navigator.language.split("-")[0];
+      console.log(browserLang)
+      return browserLang === "fr" ? "fr" : "en";
+    };
+    setLang(detectLanguage());
+  }, []);
+
+  const toggleLanguage = () => {
+    setLang((prevLang) => (prevLang === "en" ? "fr" : "en"));
+  };
+
+  const t = translations[lang];
+
+  return (
+    <div className="mx-auto">
+      <LanguageSwitcher lang={lang} onLanguageChange={toggleLanguage} />
+      <header className="relative text-center py-32 px-4 overflow-hidden bg-[#6200EE]">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/hero-background.jpg"
+            alt="Togolese cultural background"
+            quality={100}
+            fill
+            sizes="100vw"
+            style={{
+              objectFit: "cover"
+            }} />
+          <div className="absolute inset-0 bg-black opacity-50"></div>
+        </div>
+        <div className="relative z-10">
+          <motion.h1
+            className="text-6xl font-bold mb-6 text-white text-shadow"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            {t.title}
+          </motion.h1>
+          <motion.p
+            className="text-2xl mb-8 text-white text-shadow max-w-2xl mx-auto"
+            {...fadeIn}
+          >
+            {t.subtitle}
+          </motion.p>
+          <motion.div
+            className="flex justify-center space-x-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
+            <a href="#" className="w-48">
+              <Image
+                src="/google-play-badge.png"
+                alt="Get it on Google Play"
+                width={646}
+                height={250}
+                sizes="100vw"
+                style={{
+                  width: "100%",
+                  height: "auto"
+                }} />
+            </a>
+            <a href="#" className="w-48">
+              <Image
+                src="/app-store-badge.svg"
+                alt="Download on the App Store"
+                width={646}
+                height={250}
+                sizes="100vw"
+                style={{
+                  width: "100%",
+                  height: "auto"
+                }} />
+            </a>
+          </motion.div>
+        </div>
+      </header>
+      <motion.section
+        className="bg-white"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <div className="container mx-auto grid md:grid-cols-2 gap-12 items-center py-16">
+          <div>
+            <h2 className="text-3xl font-bold mb-4 text-[#212121]">
+              {t.discoverTitle}
+            </h2>
+            <p className="text-lg text-[#757575] mb-6">{t.discoverText}</p>
+            <ul className="space-y-4">
+              {t.features.map((item, index) => (
+                <motion.li
+                  key={index}
+                  className="flex items-start"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                >
+                  <span className="text-[#03DAC6] mr-2">✓</span>
+                  <span>{item}</span>
+                </motion.li>
+              ))}
+            </ul>
+          </div>
+
+          <motion.div
+            className="relative h-80 rounded-lg overflow-hidden shadow-lg"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 300 }}
           >
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+              src="/togo-landscape.jpg"
+              alt="Beautiful landscape of Togo"
+              fill
+              sizes="100vw"
+              style={{
+                objectFit: "cover"
+              }} />
+          </motion.div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      </motion.section>
+      <motion.section
+        className="py-16 bg-[#F5F5F5] px-4"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <div className="container mx-auto">
+          <h2 className="text-3xl font-bold mb-12 text-center text-[#212121]">
+            {t.whyChoose}
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: <BookOpen className="w-12 h-12 text-[#6200EE]" />,
+                title:
+                  lang === "en"
+                    ? "Learn Anytime, Anywhere"
+                    : "Apprenez n'importe quand, n'importe où",
+                description:
+                  lang === "en"
+                    ? "Our mobile app lets you learn Kabiyè at your own pace, wherever you are."
+                    : "Notre application mobile vous permet d'apprendre le Kabiyè à votre rythme, où que vous soyez.",
+              },
+              {
+                icon: <Users className="w-12 h-12 text-[#6200EE]" />,
+                title:
+                  lang === "en"
+                    ? "Connect with Native Speakers"
+                    : "Connectez-vous avec des locuteurs natifs",
+                description:
+                  lang === "en"
+                    ? "Practice with audio from native Kabiyè speakers to perfect your pronunciation."
+                    : "Pratiquez avec l'audio de locuteurs natifs Kabiyè pour perfectionner votre prononciation.",
+              },
+              {
+                icon: <Globe className="w-12 h-12 text-[#6200EE]" />,
+                title:
+                  lang === "en"
+                    ? "Immerse in Culture"
+                    : "Immergez-vous dans la culture",
+                description:
+                  lang === "en"
+                    ? "Go beyond language—dive into the rich cultural heritage of the Kabiyè people."
+                    : "Allez au-delà de la langue - plongez dans le riche patrimoine culturel du peuple Kabiyè.",
+              },
+            ].map((feature, index) => (
+              <motion.div
+                key={index}
+                className="text-center bg-white p-6 rounded-lg shadow-md"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2 }}
+                viewport={{ once: true }}
+              >
+                <motion.div
+                  className="flex justify-center mb-4"
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                >
+                  {feature.icon}
+                </motion.div>
+                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                <p className="text-[#757575]">{feature.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.section>
+      <motion.section
+        className="py-16 bg-white px-4"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <h2 className="text-3xl font-bold mb-8 text-center text-[#212121]">
+          {t.sampleLesson}
+        </h2>
+        <SampleLesson lang={lang} />
+      </motion.section>
+      <motion.section
+        className="py-16 bg-[#F5F5F5] px-4"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <h2 className="text-3xl font-bold mb-6 text-center text-[#212121]">
+          {t.joinCommunity}
+        </h2>
+        <p className="text-xl mb-8 text-[#757575] max-w-2xl mx-auto text-center">
+          {t.communityText}
+        </p>
+        <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-6">
+          <motion.a
+            href="https://github.com/Kabiyè en poche/app"
+            className="flex items-center justify-center px-6 py-3 bg-[#6200EE] text-white rounded-full hover:bg-opacity-90 transition-colors text-lg font-semibold"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <GithubLogo className="mr-2" /> {t.viewGithub}
+          </motion.a>
+          <motion.a
+            href="#"
+            className="flex items-center justify-center px-6 py-3 bg-[#03DAC6] text-white rounded-full hover:bg-opacity-90 transition-colors text-lg font-semibold"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            {t.joinUs}
+          </motion.a>
+        </div>
+      </motion.section>
+      <motion.section
+        className="py-16 bg-white px-4"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <NewsletterSignup lang={lang} />
+      </motion.section>
+      <motion.section
+        className="py-16 text-center bg-[#6200EE] text-white px-4"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <h2 className="text-3xl font-bold mb-6">{t.readyToStart}</h2>
+        <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
+          {t.downloadNow}
+        </p>
+        <motion.div
+          className="flex justify-center space-x-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <a href="#" className="w-48">
+            <Image
+              src="/google-play-badge.png"
+              alt="Get it on Google Play"
+              width={646}
+              height={250}
+              sizes="100vw"
+              style={{
+                width: "100%",
+                height: "auto"
+              }} />
+          </a>
+          <a href="#" className="w-48">
+            <Image
+              src="/app-store-badge.svg"
+              alt="Download on the App Store"
+              width={646}
+              height={250}
+              sizes="100vw"
+              style={{
+                width: "100%",
+                height: "auto"
+              }} />
+          </a>
+        </motion.div>
+      </motion.section>
     </div>
   );
 }
