@@ -2,11 +2,18 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { BookOpen, Globe, Users, GithubLogo } from "@phosphor-icons/react";
+import {
+  BookOpen,
+  Globe,
+  Users,
+  GithubLogo,
+  Keyboard,
+} from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import SampleLesson from "@/components/sample-lesson";
 import LanguageSwitcher from "@/components/language-switcher";
 import NewsletterSignup from "@/components/newsletter-signup";
+import KabiyeKeyboard from "@/components/kabiye-keyboard";
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
@@ -37,6 +44,7 @@ const translations = {
     readyToStart: "Ready to Start Your Kabiyè Journey?",
     downloadNow:
       "Download the Kabiyè en poche app now and join thousands of learners discovering the beauty of Kabiyè language and culture.",
+    openKeyboard: "Open Kabiyè Keyboard",
   },
   fr: {
     title: "Kabiyè en poche",
@@ -60,11 +68,13 @@ const translations = {
     readyToStart: "Prêt à commencer votre voyage Kabiyè ?",
     downloadNow:
       "Téléchargez l'application Kabiyè en poche maintenant et rejoignez des milliers d'apprenants découvrant la beauté de la langue et de la culture Kabiyè.",
+    openKeyboard: "Ouvrir le clavier Kabiyè",
   },
 };
 
 export default function Home() {
   const [lang, setLang] = useState<"en" | "fr">("en");
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
   useEffect(() => {
     const detectLanguage = () => {
@@ -84,11 +94,27 @@ export default function Home() {
   return (
     <div className="mx-auto">
       <LanguageSwitcher lang={lang} onLanguageChange={toggleLanguage} />
-      <header className="relative text-center py-32 px-4 overflow-hidden bg-[#6200EE]">
+      <motion.button
+        className="fixed top-16 right-4 bg-white text-[#6200EE] px-4 py-2 rounded-full shadow-md z-50 flex items-center"
+        onClick={() => setIsKeyboardOpen(true)}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        aria-label={t.openKeyboard}
+      >
+        <Keyboard className="mr-2" size={18} />
+        {t.openKeyboard}
+      </motion.button>
+      <KabiyeKeyboard
+        isOpen={isKeyboardOpen}
+        onClose={() => setIsKeyboardOpen(false)}
+        lang={lang}
+      />
+
+      <header className="relative text-center py-64 px-4 overflow-hidden bg-[#6200EE]">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/hero-background.jpg"
-            alt="Togolese cultural background"
+            src="/hero-bg-ai.webp"
+            alt="Togolese cultural background, AI generated"
             quality={100}
             fill
             sizes="100vw"
@@ -114,7 +140,7 @@ export default function Home() {
             {t.subtitle}
           </motion.p>
           <motion.div
-            className="flex justify-center space-x-4"
+            className="flex justify-center space-x-4 items-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
@@ -134,7 +160,7 @@ export default function Home() {
             </a>
             <a href="#" className="w-48">
               <Image
-                src="/app-store-badge.svg"
+                src="/app-store-badge.png"
                 alt="Download on the App Store"
                 width={646}
                 height={250}
@@ -149,7 +175,7 @@ export default function Home() {
         </div>
       </header>
       <motion.section
-        className="bg-white"
+        className="bg-white px-4"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
@@ -184,8 +210,9 @@ export default function Home() {
             transition={{ type: "spring", stiffness: 300 }}
           >
             <Image
-              src="/togo-landscape.jpg"
+              src="/1024px-Togo_Taberma_house_02.jpg"
               alt="Beautiful landscape of Togo"
+              title="Erik Kristensen, CC BY 2.0 &lt;https://creativecommons.org/licenses/by/2.0&gt;, via Wikimedia Commons"
               fill
               sizes="100vw"
               style={{
@@ -209,7 +236,12 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                icon: <BookOpen className="w-12 h-12 text-[#6200EE]" />,
+                icon: (
+                  <BookOpen
+                    className="w-12 h-12 text-[#6200EE]"
+                    weight="thin"
+                  />
+                ),
                 title:
                   lang === "en"
                     ? "Learn Anytime, Anywhere"
@@ -220,7 +252,9 @@ export default function Home() {
                     : "Notre application mobile vous permet d'apprendre le Kabiyè à votre rythme, où que vous soyez.",
               },
               {
-                icon: <Users className="w-12 h-12 text-[#6200EE]" />,
+                icon: (
+                  <Users className="w-12 h-12 text-[#6200EE]" weight="thin" />
+                ),
                 title:
                   lang === "en"
                     ? "Connect with Native Speakers"
@@ -231,7 +265,9 @@ export default function Home() {
                     : "Pratiquez avec l'audio de locuteurs natifs Kabiyè pour perfectionner votre prononciation.",
               },
               {
-                icon: <Globe className="w-12 h-12 text-[#6200EE]" />,
+                icon: (
+                  <Globe className="w-12 h-12 text-[#6200EE]" weight="thin" />
+                ),
                 title:
                   lang === "en"
                     ? "Immerse in Culture"
@@ -290,10 +326,11 @@ export default function Home() {
         </p>
         <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-6">
           <motion.a
-            href="https://github.com/Kabiyè en poche/app"
+            href="https://github.com/kabiye-lang/kabiye-en-poche"
             className="flex items-center justify-center px-6 py-3 bg-[#6200EE] text-white rounded-full hover:bg-opacity-90 transition-colors text-lg font-semibold"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            target="_blank"
           >
             <GithubLogo className="mr-2" /> {t.viewGithub}
           </motion.a>
@@ -328,7 +365,7 @@ export default function Home() {
           {t.downloadNow}
         </p>
         <motion.div
-          className="flex justify-center space-x-4"
+          className="flex justify-center space-x-4 items-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
@@ -348,7 +385,7 @@ export default function Home() {
           </a>
           <a href="#" className="w-48">
             <Image
-              src="/app-store-badge.svg"
+              src="/app-store-badge.png"
               alt="Download on the App Store"
               width={646}
               height={250}

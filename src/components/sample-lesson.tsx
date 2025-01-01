@@ -4,18 +4,26 @@ import { useState } from "react";
 import { SpeakerHigh } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const lessons = {
-  en: [
-    { kabiye: "Ɛyaɖɛ", english: "Hello", audio: "/audio/hello.mp3" },
-    { kabiye: "Ɖɔɔzɩ", english: "Thank you", audio: "/audio/thank-you.mp3" },
-    { kabiye: "Ɛsɔɔlɩ", english: "Goodbye", audio: "/audio/goodbye.mp3" },
-  ],
-  fr: [
-    { kabiye: "Ɛyaɖɛ", french: "Bonjour", audio: "/audio/hello.mp3" },
-    { kabiye: "Ɖɔɔzɩ", french: "Merci", audio: "/audio/thank-you.mp3" },
-    { kabiye: "Ɛsɔɔlɩ", french: "Au revoir", audio: "/audio/goodbye.mp3" },
-  ],
-};
+const lessons = [
+  {
+    kabiye: "Ɛyaɖɛ",
+    english: "Hello",
+    french: "Bonjour",
+    audio: "/audio/hello.mp3",
+  },
+  {
+    kabiye: "Ɖɔɔzɩ",
+    english: "Thank you",
+    french: "Merci",
+    audio: "/audio/thank-you.mp3",
+  },
+  {
+    kabiye: "Ɛsɔɔlɩ",
+    english: "Goodbye",
+    french: "Au revoir",
+    audio: "/audio/goodbye.mp3",
+  },
+];
 
 interface SampleLessonProps {
   lang?: "en" | "fr";
@@ -26,12 +34,12 @@ export default function SampleLesson({ lang = "en" }: SampleLessonProps) {
   const [showTranslation, setShowTranslation] = useState(false);
 
   const playAudio = () => {
-    const audio = new Audio(lessons[lang][currentLesson].audio);
+    const audio = new Audio(lessons[currentLesson].audio);
     audio.play();
   };
 
   const nextLesson = () => {
-    setCurrentLesson((prev) => (prev + 1) % lessons[lang].length);
+    setCurrentLesson((prev) => (prev + 1) % lessons.length);
     setShowTranslation(false);
   };
 
@@ -69,7 +77,7 @@ export default function SampleLesson({ lang = "en" }: SampleLessonProps) {
         transition={{ duration: 0.3 }}
       >
         <p className="text-3xl font-bold mb-2">
-          {lessons[lang][currentLesson].kabiye}
+          {lessons[currentLesson].kabiye}
         </p>
         <AnimatePresence>
           {showTranslation && (
@@ -79,11 +87,7 @@ export default function SampleLesson({ lang = "en" }: SampleLessonProps) {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
             >
-              {
-                lessons[lang][currentLesson][
-                  lang === "en" ? "english" : "french"
-                ]
-              }
+              {lessons[currentLesson][lang === "en" ? "english" : "french"]}
             </motion.p>
           )}
         </AnimatePresence>
